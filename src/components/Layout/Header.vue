@@ -12,15 +12,16 @@
       <v-spacer></v-spacer>
 
       <div class="d-none d-md-flex">
-        <!-- <v-text-field
+        <v-text-field
           label="Поиск"
+          color="#3B7978"
           single-line
           prepend-inner-icon="mdi-magnify"
           outlined
           dense
           hide-details="auto"
           class="rounded-lg"
-        ></v-text-field> -->
+        ></v-text-field>
 
         <v-btn
           class="ml-4 rounded-lg fix-margin-right"

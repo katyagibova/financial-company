@@ -5,16 +5,18 @@
       <v-main>
         <router-view />
       </v-main>
+      <Footer />
     </v-app>
   </div>
 </template>
 
 <script>
+import Footer from './components/Layout/Footer.vue';
 import Header from './components/Layout/Header.vue'
 
 export default {
   name: "App",
-  components: {Header},
+  components: {Header, Footer},
   data() {
     return {
     }
@@ -26,10 +28,12 @@ export default {
 </script>
 
 <style lang="scss">
+*{
+  font-family: 'Poppins', sans-serif;
+}
 #app {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
 }
 </style>
