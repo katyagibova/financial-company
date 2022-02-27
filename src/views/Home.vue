@@ -21,45 +21,48 @@
       </div>
     </v-container>
   </div>
-  <v-container>
-    <v-row class="mt-4">
-      <v-col 
-      cols="4" 
-      v-for="(item, i) in advantages" 
-      :key="i"
-      class="d-flex flex-column align-center">
-        <v-icon size="40" color="#3B7978">
-          mdi-{{item.icon}}
-        </v-icon>
-        <div class="advantages-title mt-4">{{item.title}}</div>
-        <div class="mt-2" style="text-align: center; color: #616161">
-          {{item.text}}
-        </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="2">
-        <v-btn
-        color="#3B7978"
-        dark
-        block
-        depressed>Рассчитать займ</v-btn>
-      </v-col>
-      <v-col cols="2">
-        <v-btn
-        color="#3B7978"
-        text
-        block
-        depressed>
-          Перейти к заявкам
-          <v-icon
-          color="#3B7978">
-            mdi-arrow-right-thin
+  <div class="grey lighten-4">
+    <v-container>
+      <v-row class="mt-4">
+        <v-col 
+        cols="4" 
+        v-for="(item, i) in advantages" 
+        :key="i"
+        class="d-flex flex-column align-center">
+          <v-icon size="40" color="#3B7978">
+            mdi-{{item.icon}}
           </v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-container>
+          <div class="advantages-title mt-4">{{item.title}}</div>
+          <div class="mt-2" style="text-align: center; color: #616161">
+            {{item.text}}
+          </div>
+        </v-col>
+      </v-row>
+      <v-row class="mt-4 mb-7">
+        <v-col cols="2">
+          <v-btn
+          color="#3B7978"
+          dark
+          block
+          depressed>Рассчитать займ</v-btn>
+        </v-col>
+        <v-col cols="2">
+          <v-btn
+          color="#3B7978"
+          text
+          block
+          depressed
+          @click="$router.push({ name: 'applications' })">
+            Перейти к заявкам
+            <v-icon
+            color="#3B7978">
+              mdi-arrow-right-thin
+            </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </div>
 </template>
 

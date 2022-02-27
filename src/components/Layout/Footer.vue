@@ -12,6 +12,6 @@ export default {
 
 <style>
 .footer {
-    height: 100px;
+  height: 100px;
 }
 </style>

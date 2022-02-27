@@ -3,7 +3,9 @@
     <v-toolbar flat>
       <div  sm="2" md="1" class="mr-4 fix-margin-left">
         <router-link to="/" class="reset-link">
-          <div class="my-logo"></div>
+          <div >
+              <v-img width="40" class="my-logo" contain src="../../assets/main_logo.svg"></v-img>
+          </div>
         </router-link>
       </div>
       <v-toolbar-title>
@@ -29,7 +31,7 @@
           depressed
           dark
           color="#3B7978"
-          @click="$router.push({ name: 'user-profile', params: { userId } })"
+          @click="$router.push({ name: 'login' })"
         >
           Личный кабинет
         </v-btn>
@@ -84,7 +86,7 @@ export default {
 .my-logo {
   width: 40px;
   height: 40px;
-  background-color: #3B7978;
+  /* background-color: #3B7978; */
   border-radius: 8px;
 }
 </style>

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Auth/Login.vue'
+import Applications from '../views/Application/Applications.vue'
 
 Vue.use(VueRouter)
 
@@ -11,10 +13,15 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/applications',
+    name: 'applications',
+    component: Applications
+  },
+  {
+    path: "/auth/login",
+    name: "login",
+    component: Login,
+  },
 ]
 
 const router = new VueRouter({
