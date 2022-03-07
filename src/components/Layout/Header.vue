@@ -14,17 +14,7 @@
       <v-spacer></v-spacer>
 
       <div class="d-none d-md-flex">
-        <div class="d-flex align-center text--h4">Все заявки</div>
-        <!-- <v-text-field
-          label="Поиск"
-          color="#3B7978"
-          single-line
-          prepend-inner-icon="mdi-magnify"
-          outlined
-          dense
-          hide-details="auto"
-          class="rounded-lg"
-        ></v-text-field> -->
+        <div class="text d-flex align-end" style="">Все заявки</div>
 
         <v-btn
           class="ml-4 rounded-lg fix-margin-right"
@@ -70,8 +60,15 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="scss">
+.text{
+  font-size: 22px;
+  &:hover{
+    text-decoration: underline;
+    color: #3B7978;
+    cursor: pointer;
+  }
+}
 .logo-text{
   font-family: 'ABeeZee', sans-serif;
   font-size: 36px;
