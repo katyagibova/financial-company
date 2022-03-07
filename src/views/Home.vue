@@ -4,7 +4,7 @@
     <v-container>
       <div class="my-3 d-flex justify-space-between">
         <div class="text-h2 d-flex justify-center flex-column">
-          <div class="white--text">Здесь должен быть крутой слоган</div>
+          <div class="white--text">Больше, чем просто финансовая компания</div>
           <div>
             <v-btn
             height="40px"

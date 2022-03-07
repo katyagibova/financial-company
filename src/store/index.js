@@ -28,6 +28,10 @@ export default new Vuex.Store({
       state.token = token;
       localStorage.setItem("token", token)
     },
+    DELETE_TOKEN(state) {
+      localStorage.removeItem("token");
+      state.token = "";
+    },
   },
   actions: {
     getApp({ commit }) {
@@ -72,6 +76,9 @@ export default new Vuex.Store({
           // dispatch("notification/add", notification, { root: true });
           throw error;
         });
+    },
+    logoutUser({ commit }) {
+      commit("DELETE_TOKEN");
     },
     getUserApplication({ commit }) {
       return api

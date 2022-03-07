@@ -14,7 +14,9 @@
       <v-spacer></v-spacer>
 
       <div class="d-none d-md-flex">
-        <div class="text d-flex align-end" style="">Все заявки</div>
+        <div
+        class="text d-flex align-end"
+        @click="$router.push({ name: 'applications' })">Все заявки</div>
 
         <v-btn
           class="ml-4 rounded-lg fix-margin-right"
@@ -56,7 +58,12 @@ export default {
     ...mapGetters(["loggedIn"]),
   },
   created(){},
-  methods: {},
+  methods: {
+    logout() {
+      this.$store.dispatch("logoutUser");
+      this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 
