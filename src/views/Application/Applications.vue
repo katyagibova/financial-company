@@ -1,5 +1,5 @@
 <template>
-<div class="grey lighten-4" style="height: 100%">
+<div  style="height: 100%; background-color: #edf3f0">
   <v-container>
     <v-row dense>
       <v-col class="d-flex" cols="12" md="2">
@@ -40,6 +40,11 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col v-show="loggedIn">
+        Hiiiiiiiiiiiiii
+      </v-col>
+    </v-row>
     <v-row dense class="my-2">
       <v-col
       cols="4"
@@ -54,7 +59,7 @@
 
 <script>
 // import Axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import ApplicationCard from './ApplicationCard.vue'
 
 export default {
@@ -63,7 +68,8 @@ export default {
     ApplicationCard
   },
   computed: {
-    ...mapState(["applications", "cities"]),
+    ...mapState(["applications", "cities", "user_applications"]),
+    ...mapGetters(["loggedIn"]),
   },
   data(){
     return {
@@ -77,6 +83,9 @@ export default {
   created(){
     this.$store.dispatch("getAppCities");
     this.$store.dispatch("getApp");
+    this.$store.dispatch("getUserApplication").then(() => {
+      console.log(this.user_applications)
+    })
   }
 }
 </script>

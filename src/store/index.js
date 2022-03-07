@@ -8,7 +8,11 @@ export default new Vuex.Store({
   state: {
     applications: [],
     cities: [],
-    token: "",
+    user_applications: [],
+    token: localStorage.getItem("token") || "",
+  },
+  getters: {
+    loggedIn: (state) => !!state.token,
   },
   mutations: {
     SET_APP(state, app) {
@@ -16,6 +20,9 @@ export default new Vuex.Store({
     },
     SET_APP_CITIES(state, cities) {
       state.cities = cities;
+    },
+    SET_USER_APPLICATION(state, user_applications) {
+      state.user_applications = user_applications;
     },
     SET_TOKEN(state, token) {
       state.token = token;
@@ -43,11 +50,8 @@ export default new Vuex.Store({
       return api
         .login(data)
         .then((response) => {
-          console.log(
-            response
-          );
-          const { accessToken } = response.data;
-          commit("SET_TOKEN", accessToken);
+          const { access_token } = response.data;
+          commit("SET_TOKEN", access_token);
           // commit("SET_USERID", userId);
           // const notification = {
           //   type: "success",
@@ -69,7 +73,13 @@ export default new Vuex.Store({
           throw error;
         });
     },
+    getUserApplication({ commit }) {
+      return api
+        .getUserApplication()
+        .then((response) => {
+          commit("SET_USER_APPLICATION", response.data);
+        })
+        .catch((err) => console.log(err));
+    },
   },
-  getters: {
-  }
 })

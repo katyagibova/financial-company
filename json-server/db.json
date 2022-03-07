@@ -36,21 +36,16 @@
       "monthsNumber": 5,
       "person": "Золотарев Станислав",
       "personId": 2
-    }
-  ],
-  "users": [
-    {
-      "id": 1,
-      "login": "admin",
-      "password": "pa$$word"
     },
     {
-      "id": 2,
-      "login": "parker",
-      "password": "root666"
+      "id": 4,
+      "title": "!!!!!!!!!!!!",
+      "sum": 10000,
+      "percent": 3,
+      "publicationDate": "",
+      "monthsNumber": 5,
+      "person": "Золотарев Станислав",
+      "personId": 2
     }
-  ],
-  "tokens": [
-    "HsBTmOvc71S62neBbk39VaMoiCXqvoK1zljsh1I7F9j1TSpWuu2N1U8klg5NK0ICKkYGRCsaiXdDR0tA2Av5ShPGmIVaPdIVyTNE"
   ]
 }

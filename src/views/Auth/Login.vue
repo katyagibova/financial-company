@@ -86,28 +86,21 @@ export default {
   },
   methods: {
     loginUser() {
-      // const data = {
-      //   login: this.mail,
-      //   password: this.password,
-      // };
-      this.$store
-        .dispatch("loginUser", {
-          login: this.mail,
+      this.$store.dispatch("loginUser", {
+          email: this.mail,
           password: this.password
         })
-        .then((response) => {
-          console.log(response)
-        })
-        .catch(() => {});
+      .then(() => {})
+      .catch(() => {});
     },
-    sendCode() {
-      this.$store
-        .dispatch("auth/sendConfirmationCode", this.mail)
-        .then(() => {
-          this.enterMail = false;
-        })
-        .catch(() => {});
-    },
+    // sendCode() {
+    //   this.$store
+    //     .dispatch("auth/sendConfirmationCode", this.mail)
+    //     .then(() => {
+    //       this.enterMail = false;
+    //     })
+    //     .catch(() => {});
+    // },
   },
 };
 </script>

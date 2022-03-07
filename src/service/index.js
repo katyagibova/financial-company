@@ -12,14 +12,14 @@ const apiClient = axios.create({
     timeout: 10000,
 });
 const apiAuth = axios.create({
-    baseURL: "http://localhost:5500",
-    // withCredentials: false,
-    // headers: {
-    //   Accept: "application/json",
-    //   "Content-Type": "application/json",
-    //   "x-access-token": token,
-    // },
-    // timeout: 10000,
+    baseURL: "http://localhost:8000",
+    withCredentials: false,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token,
+    },
+    timeout: 10000,
 });
 
 export const api = {
@@ -30,6 +30,9 @@ export const api = {
         return apiClient.get(`/cities`);
     },
     login(data) {
-        return apiAuth.post(`/login`, data);
+        return apiAuth.post(`/auth/login`, data);
+    },
+    getUserApplication() {
+        return apiAuth.get(`/user_applications`);
     },
 }
