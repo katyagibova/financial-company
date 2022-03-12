@@ -89,7 +89,7 @@
               <div>
                 Ежемесячный платёж:
               </div>
-              <div class="percent d-flex flex-coloumn align-center justify-center">3000₽</div>
+              <div class="percent d-flex flex-coloumn align-center justify-center">{{payment}}₽</div>
             </div>
           </v-col>
         </v-row>
@@ -147,6 +147,7 @@ export default {
       sum: null,
       monthsNumber: null,
       percent: 0,
+      payment: 0,
       create_application_dialog: false,
     }
   },
@@ -155,13 +156,21 @@ export default {
       if(value == 0){
         this.percent = 0
       } else if(value > 0 && value < 10000){
-        this.percent = 3
-      } else if(value >= 10000 && value < 30000){
-        this.percent = 4
-      } else {
-        const number = value / 30000
-        this.percent = 4 + Math.trunc(number)
-      }
+        this.percent = 11
+      } else if(value >= 10000 && value < 15000){
+        this.percent = 12
+      } else if(value >= 15000 && value < 20000){
+        this.percent = 13
+      } else if(value >= 20000 && value < 25000){
+        this.percent = 14
+      } else if(value >= 25000){
+        this.percent = 15
+      } 
+    },
+    monthsNumber(value){
+      if(this.sum <= 0) return
+
+      this.paymentCalculation(value)
     }
   },
   methods: {
@@ -172,6 +181,7 @@ export default {
         sum: Number(this.sum),
         description: this.description,
         percent: 5,
+        payment: 5,
         publicationDate: new Date,
         monthsNumber: Number(this.monthsNumber),
         person: "Гибова Екатерина",
@@ -180,6 +190,16 @@ export default {
       console.log(application)
         // this.$store.dispatch("postNewApplication", application)
     },
+
+    paymentCalculation(data){
+      const percentageShare = this.percent / 1200
+      this.payment = this.sum*(percentageShare + (percentageShare / ((1 + percentageShare)**data - 1)))
+      this.payment = this.rounded(this.payment)
+    },
+
+    rounded(number){
+      return +number.toFixed(2);
+    }
   },
   created(){
     this.$store.dispatch("getUserApplication")    
