@@ -24,7 +24,7 @@
           depressed
           dark
           color="#3B7978"
-          @click="$router.push({ name: 'login' })"
+          @click="$router.push({ name: 'user-profile' })"
         >
           Личный кабинет
         </v-btn>

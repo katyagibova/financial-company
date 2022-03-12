@@ -90,7 +90,9 @@ export default {
           email: this.mail,
           password: this.password
         })
-      .then(() => {})
+      .then(() => {
+        this.$router.push({ name: "user-profile" });
+      })
       .catch(() => {});
     },
     // sendCode() {

@@ -46,6 +46,26 @@
       "monthsNumber": 5,
       "person": "Золотарев Станислав",
       "personId": 2
+    },
+    {
+      "title": "Нужна ваша помощь",
+      "sum": 10000,
+      "percent": 4,
+      "publicationDate": "2022-03-07T21:25:34.950Z",
+      "monthsNumber": 10,
+      "person": "Гибова Екатерина",
+      "personId": 4,
+      "id": 5
+    },
+    {
+      "id": 6,
+      "title": "Нужна ваша помощь",
+      "sum": 50000,
+      "percent": 5,
+      "publicationDate": "2022-03-07T21:31:12.995Z",
+      "monthsNumber": 10,
+      "person": "Гибова Екатерина",
+      "personId": 4
     }
   ]
 }

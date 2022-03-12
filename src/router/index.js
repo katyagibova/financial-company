@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Auth/Login.vue'
 import Applications from '../views/Application/Applications.vue'
+import userProfile from '../views/Admin/UserProfile.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,12 @@ const routes = [
     path: "/auth/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/user-profile",
+    name: "user-profile",
+    component: userProfile,
+    meta: { requiresAuth: true },
   },
 ]
 

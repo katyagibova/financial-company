@@ -45,7 +45,7 @@
       cols="4"
       v-for="item in applications"
       :key="item.id">
-        <application-card :application="item" />
+        <ApplicationCard :application="item" />
       </v-col>
     </v-row>
   </v-container>

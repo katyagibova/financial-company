@@ -29,6 +29,9 @@ export const api = {
     getAppCities() {
         return apiClient.get(`/cities`);
     },
+    postNewApplication(data) {
+        return apiClient.post(`/applications`, data);
+    },
     login(data) {
         return apiAuth.post(`/auth/login`, data);
     },

@@ -88,5 +88,18 @@ export default new Vuex.Store({
         })
         .catch((err) => console.log(err));
     },
+    postNewApplication({ commit }, data) {
+      return api
+        .postNewApplication(data)
+        .then((response) => {
+          // const res = response.data;
+          console.log("🚀 ~ file: arena.js ~ line 314 ~ .then ~ res", response);
+          // commit("ADD_ARENA", res);
+          // return res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 })
