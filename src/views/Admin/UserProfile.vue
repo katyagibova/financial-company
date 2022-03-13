@@ -160,7 +160,9 @@ export default {
         this.percent = 14
       } else if(value >= 25000){
         this.percent = 15
-      } 
+      }
+
+      this.paymentCalculation(this.monthsNumber)
     },
     monthsNumber(value){
       if(this.sum <= 0) return
@@ -188,7 +190,8 @@ export default {
       console.log(application)
       this.$store.dispatch("postNewApplication", application)
       this.$store.dispatch("postNewUserApplication", application).then(() => {
-        console.log(this.user_applications)
+        this.create_application_dialog = false
+        this.initAppDialog()
       })
     },
 
@@ -200,7 +203,15 @@ export default {
 
     rounded(number){
       return +number.toFixed(2);
-    }
+    },
+
+    initAppDialog() {
+      this.description = ""
+      this.sum = null
+      this.monthsNumber = null
+      this.percent = 0
+      this.payment= 0
+    },
   },
   created(){
     this.$store.dispatch("getUserApplication")

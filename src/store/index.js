@@ -38,6 +38,12 @@ export default new Vuex.Store({
     ADD_APP(state, app) {
       state.applications.push(app);
     },
+    DELETE_USER_APP(state, appId) {
+      state.user_applications = state.user_applications.filter((x) => x.id !== appId);
+    },
+    DELETE_APP(state, appId) {
+      state.applications = state.applications.filter((x) => x.id !== appId);
+    },
   },
   actions: {
     getApp({ commit }) {
@@ -106,6 +112,26 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+    updateApplication(_commit, data) {
+      return api
+        .updateApplication(data)
+        .then((response) => {
+          const res = response.data;
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+          throw err;
+        });
+    },
+    deleteApplication({ commit }, appId ) {
+      return api
+        .deleteApplication(appId)
+        .then(() => {
+          commit("DELETE_APP", appId);
+        })
+        .catch((err) => console.log(err));
+    },
     postNewUserApplication({ commit }, data) {
       return api
         .postNewUserApplication(data)
@@ -117,6 +143,26 @@ export default new Vuex.Store({
         .catch((err) => {
           console.log(err);
         });
+    },
+    updateUserApplication(_commit, data) {
+      return api
+        .updateUserApplication(data)
+        .then((response) => {
+          const res = response.data;
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+          throw err;
+        });
+    },
+    deleteUserApplication({ commit }, appId ) {
+      return api
+        .deleteUserApplication(appId)
+        .then(() => {
+          commit("DELETE_USER_APP", appId);
+        })
+        .catch((err) => console.log(err));
     },
   },
 })

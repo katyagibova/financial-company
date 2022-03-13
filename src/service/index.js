@@ -23,22 +23,34 @@ const apiAuth = axios.create({
 });
 
 export const api = {
+    login(data) {
+        return apiAuth.post(`/auth/login`, data);
+    },
     getApp() {
         return apiClient.get(`/applications`);
-    },
-    getAppCities() {
-        return apiClient.get(`/cities`);
     },
     postNewApplication(data) {
         return apiClient.post(`/applications`, data);
     },
-    postNewUserApplication(data) {
-        return apiAuth.post(`/user_applications`, data);
+    updateApplication({ appId, application }) {
+        return apiClient.put(`/applications/${appId}`, application);
     },
-    login(data) {
-        return apiAuth.post(`/auth/login`, data);
+    deleteApplication(appId) {
+        return apiClient.delete(`/applications/${appId}`);
+    },
+    getAppCities() {
+        return apiClient.get(`/cities`);
     },
     getUserApplication() {
         return apiAuth.get(`/user_applications`);
+    },
+    postNewUserApplication(data) {
+        return apiAuth.post(`/user_applications`, data);
+    },
+    updateUserApplication({ appId, application }) {
+        return apiAuth.put(`/user_applications/${appId}`, application);
+    },
+    deleteUserApplication(appId) {
+        return apiAuth.delete(`/user_applications/${appId}`);
     },
 }

@@ -5,23 +5,9 @@
 </template>
 
 <script>
-
 export default {
   name: 'Applications',
-  components: {
-  },
-  computed: {
-  },
-  data(){
-    return {
-    }
-  },
-  methods: {
-  },
-  created(){
-  }
 }
 </script>
 
-<style>
-</style>
+<style></style>

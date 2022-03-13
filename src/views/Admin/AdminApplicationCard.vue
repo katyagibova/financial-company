@@ -15,7 +15,7 @@
                     </v-icon>
                   </v-btn>
                   <v-btn icon class="ml-2">
-                    <v-icon color="#000" size="20">
+                    <v-icon color="#000" size="20" @click="deleteApp">
                         mdi-trash-can-outline
                     </v-icon>
                   </v-btn>
@@ -55,14 +55,92 @@
     </v-row>
   </v-card>
   <v-dialog
-  width="500"
-  v-model="dlg">
-      <v-card>
-          <h1>Hey</h1>
-          <h1>Hey</h1>
-          <h1>Hey</h1>
-          <h1>Hey</h1>
-      </v-card>
+  v-model="edit_application_dialog"
+  max-width="800">
+    <v-card
+    class="pa-4"
+    elevation="0">
+        <div class="mb-3">Редактировать заявку</div>
+        
+        <v-row>
+          <v-col cols="4">
+            <div class="mr-2">
+                Сумма займа
+                <v-text-field
+                v-model="sum"
+                hide-details="auto"
+                flat
+                solo
+                background-color="#F5F5F5">
+                </v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="8">
+            <div>
+              <div>
+                Итоговая процентная ставка:
+              </div>
+              <div class="percent d-flex flex-coloumn align-center justify-center">{{percent}}%</div>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <div class="mr-2">
+              Срок выплаты (в месяцах)
+                <v-text-field
+                v-model="monthsNumber"
+                hide-details="auto"
+                flat
+                solo
+                background-color="#F5F5F5">
+                </v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="8">
+            <div>
+              <div>
+                Ежемесячный платёж:
+              </div>
+              <div class="percent d-flex flex-coloumn align-center justify-center">{{payment}}₽</div>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <div class="mb-2">
+              Описание заявки
+              <v-textarea
+              solo
+              v-model="description"
+              hide-details="auto"
+              background-color="#F5F5F5"
+              flat
+              ></v-textarea>
+          </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+            <v-btn
+            color="#3B7978"
+            dark
+            block
+            depressed
+            class="mr-2"
+            @click="updateApp">Сохранить</v-btn>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="2">
+            <v-btn
+            block
+            color="#F5F5F5"
+            depressed>
+              Отмена
+            </v-btn>
+          </v-col>
+        </v-row>
+    </v-card>
   </v-dialog>
 </div>
 </template>
@@ -79,8 +157,36 @@ export default {
   },
   data() {
     return {
-        dlg: false,
+      edit_application_dialog: false,
+      description: "",
+      sum: null,
+      monthsNumber: null,
+      percent: 0,
+      payment: 0,
     };
+  },
+  watch: {
+    sum(value){
+      if(value == 0){
+        this.percent = 0
+      } else if(value > 0 && value < 10000){
+        this.percent = 11
+      } else if(value >= 10000 && value < 15000){
+        this.percent = 12
+      } else if(value >= 15000 && value < 20000){
+        this.percent = 13
+      } else if(value >= 20000 && value < 25000){
+        this.percent = 14
+      } else if(value >= 25000){
+        this.percent = 15
+      } 
+      this.paymentCalculation(this.monthsNumber)
+    },
+    monthsNumber(value){
+      if(this.sum <= 0) return
+
+      this.paymentCalculation(value)
+    }
   },
   methods: {
     dateFormat(date) {
@@ -88,8 +194,51 @@ export default {
       return dat.format("D MMMM YYYY");
     },
 
+    updateApp(){
+      const revenue = (this.payment * this.monthsNumber - this.sum) * 0.9
+      const application = {
+        sum: Number(this.sum),
+        description: this.description,
+        percent:  Number(this.percent),
+        payment: Number(this.payment),
+        debt: Number(this.sum),
+        revenue: Number(this.rounded(revenue)),
+        publicationDate: this.application.publicationDate,
+        monthsNumber: Number(this.monthsNumber),
+        status: "Опубликовано",
+        person: "Гибова Екатерина",
+        personId: 4
+      }
+      this.$store.dispatch("updateUserApplication", { appId: this.application.id, application: application, })
+      .then(() => {
+        this.$store.dispatch("getUserApplication")
+        this.edit_application_dialog = false
+      })
+      this.$store.dispatch("updateApplication", { appId: this.application.id, application: application, })
+    },
+
     editApp(){
-        
+        this.sum = this.application.sum
+        this.monthsNumber = this.application.monthsNumber
+        this.description = this.application.description
+        this.edit_application_dialog = true
+    },
+
+    deleteApp(){
+      this.$store.dispatch("deleteUserApplication", this.application.id).then(() => {
+        this.$store.dispatch("getUserApplication")
+      });
+      this.$store.dispatch("deleteApplication", this.application.id)
+    },
+
+    paymentCalculation(data){
+      const percentageShare = this.percent / 1200
+      this.payment = this.sum*(percentageShare + (percentageShare / ((1 + percentageShare)**data - 1)))
+      this.payment = this.rounded(this.payment)
+    },
+
+    rounded(number){
+      return +number.toFixed(2);
     }
   },
 };
