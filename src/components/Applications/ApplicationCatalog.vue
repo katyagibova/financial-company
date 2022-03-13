@@ -41,11 +41,18 @@
       </v-col>
     </v-row>
     <v-row dense class="my-2">
+      <v-col cols="5">
+        Здесь будут фильтры
+      </v-col>
       <v-col
-      cols="4"
-      v-for="item in applications"
-      :key="item.id">
-        <ApplicationCard :application="item" />
+      cols="7"
+      >
+        <div
+        v-for="item in applications"
+        :key="item.id"
+        @click="$router.push({ name: 'application-page', params: { appId: item.id } })">
+            <ApplicationCard :application="item" />
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -58,7 +65,7 @@ import { mapState } from "vuex";
 import ApplicationCard from './ApplicationCard.vue'
 
 export default {
-  name: 'Applications',
+  name: 'ApplicationCatalog',
   components: {
     ApplicationCard
   },

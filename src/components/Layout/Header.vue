@@ -16,7 +16,7 @@
       <div class="d-none d-md-flex">
         <div
         class="text d-flex align-end"
-        @click="$router.push({ name: 'applications' })">Все заявки</div>
+        @click="$router.push({ name: 'application-catalog' })">Все заявки</div>
 
         <v-btn
           class="ml-4 rounded-lg fix-margin-right"
