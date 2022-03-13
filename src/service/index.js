@@ -32,6 +32,9 @@ export const api = {
     postNewApplication(data) {
         return apiClient.post(`/applications`, data);
     },
+    postNewUserApplication(data) {
+        return apiAuth.post(`/user_applications`, data);
+    },
     login(data) {
         return apiAuth.post(`/auth/login`, data);
     },

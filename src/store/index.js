@@ -32,6 +32,12 @@ export default new Vuex.Store({
       localStorage.removeItem("token");
       state.token = "";
     },
+    ADD_USER_APP(state, user_app) {
+      state.user_applications.push(user_app);
+    },
+    ADD_APP(state, app) {
+      state.applications.push(app);
+    },
   },
   actions: {
     getApp({ commit }) {
@@ -92,10 +98,21 @@ export default new Vuex.Store({
       return api
         .postNewApplication(data)
         .then((response) => {
-          // const res = response.data;
-          console.log("🚀 ~ file: arena.js ~ line 314 ~ .then ~ res", response);
-          // commit("ADD_ARENA", res);
-          // return res;
+          const res = response.data;
+          commit("ADD_APP", res);
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    postNewUserApplication({ commit }, data) {
+      return api
+        .postNewUserApplication(data)
+        .then((response) => {
+          const res = response.data;
+          commit("ADD_USER_APP", res);
+          return res;
         })
         .catch((err) => {
           console.log(err);

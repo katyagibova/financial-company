@@ -11,14 +11,14 @@
           </v-btn>
         </div>
     </div>
-    <v-row dense>
-        <v-col>
-            <v-btn
-            color="#3B7978"
-            dark
-            depressed
-            @click="postNewApplication">Сохранить</v-btn>
-        </v-col>
+    <v-row>
+      <v-col>
+        <div
+        v-for="item in user_applications"
+        :key="item.id">
+          <AdminApplicationCard :application="item" />
+        </div>
+      </v-col>
     </v-row>
   </v-container>
   <v-dialog
@@ -28,27 +28,7 @@
     class="pa-4"
     elevation="0">
         <div class="mb-3">Создать заявку</div>
-        <div class="mb-2">
-            Название заявки
-            <v-text-field
-            v-model="title"
-            hide-details="auto"
-            flat
-            solo
-            background-color="#F5F5F5">
-            </v-text-field>
-        </div>
-        <div class="mb-2">
-            Описание заявки
-            <v-textarea
-            height="100"
-            solo
-            v-model="description"
-            hide-details="auto"
-            background-color="#F5F5F5"
-            flat
-            ></v-textarea>
-        </div>
+        
         <v-row>
           <v-col cols="4">
             <div class="mr-2">
@@ -93,6 +73,20 @@
             </div>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <div class="mb-2">
+              Описание заявки
+              <v-textarea
+              solo
+              v-model="description"
+              hide-details="auto"
+              background-color="#F5F5F5"
+              flat
+              ></v-textarea>
+          </div>
+          </v-col>
+        </v-row>
         <!-- <div>
             <v-slider
             color="#3B7978"
@@ -128,10 +122,12 @@
 
 <script>
 import { mapState } from "vuex";
+import AdminApplicationCard from './AdminApplicationCard.vue';
 
 export default {
   name: 'UserProfile',
   components: {
+    AdminApplicationCard
   },
   computed: {
     ...mapState(["user_applications"]),
@@ -142,7 +138,6 @@ export default {
   },
   data(){
     return {
-      title: "",
       description: "",
       sum: null,
       monthsNumber: null,
@@ -175,20 +170,26 @@ export default {
   },
   methods: {
     postNewApplication(){
+      const revenue = (this.payment * this.monthsNumber - this.sum) * 0.9
       const application = {
         id: this.generateId,
-        title: this.title,
         sum: Number(this.sum),
         description: this.description,
-        percent: 5,
-        payment: 5,
+        percent:  Number(this.percent),
+        payment: Number(this.payment),
+        debt: Number(this.sum),
+        revenue: Number(this.rounded(revenue)),
         publicationDate: new Date,
         monthsNumber: Number(this.monthsNumber),
+        status: "Опубликовано",
         person: "Гибова Екатерина",
         personId: 4
       }
       console.log(application)
-        // this.$store.dispatch("postNewApplication", application)
+      this.$store.dispatch("postNewApplication", application)
+      this.$store.dispatch("postNewUserApplication", application).then(() => {
+        console.log(this.user_applications)
+      })
     },
 
     paymentCalculation(data){
@@ -202,7 +203,7 @@ export default {
     }
   },
   created(){
-    this.$store.dispatch("getUserApplication")    
+    this.$store.dispatch("getUserApplication")
   }
 }
 </script>
