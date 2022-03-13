@@ -53,4 +53,7 @@ export const api = {
     deleteUserApplication(appId) {
         return apiAuth.delete(`/user_applications/${appId}`);
     },
+    getAppInfo(appId) {
+        return apiClient.get(`/applications/${appId}`);
+    },
 }

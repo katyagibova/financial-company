@@ -9,6 +9,7 @@ export default new Vuex.Store({
     applications: [],
     cities: [],
     user_applications: [],
+    application: {},
     token: localStorage.getItem("token") || "",
   },
   getters: {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
   mutations: {
     SET_APP(state, app) {
       state.applications = app;
+    },
+    SET_APP_INFO(state, app) {
+      state.application = app;
     },
     SET_APP_CITIES(state, cities) {
       state.cities = cities;
@@ -161,6 +165,14 @@ export default new Vuex.Store({
         .deleteUserApplication(appId)
         .then(() => {
           commit("DELETE_USER_APP", appId);
+        })
+        .catch((err) => console.log(err));
+    },
+    getAppInfo({ commit }, appId) {
+      return api
+        .getAppInfo(appId)
+        .then((response) => {
+          commit("SET_APP_INFO", response.data);
         })
         .catch((err) => console.log(err));
     },

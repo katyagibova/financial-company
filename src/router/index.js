@@ -27,7 +27,7 @@ const routes = [
         props: true,
       },
       { 
-        path: '/:appId',
+        path: '/applications/:appId', //?????
         name: 'application-page',
         component: ApplicationPage,
         props: true,
