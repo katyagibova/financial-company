@@ -8,7 +8,7 @@
                 {{ dateFormat(application.publicationDate) }}
               </div>
               <v-spacer></v-spacer>
-              <div>
+              <div v-if="application.status == 'Опубликовано'">
                   <v-btn  icon>
                     <v-icon color="#000" size="20" @click="editApp">
                         mdi-pencil-outline
@@ -24,14 +24,28 @@
           <div class="d-flex">
             <div class="sum mb-2">{{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев</div>
             <v-spacer></v-spacer>
-              <div>
-                Статус
-              </div>
+            <div>
+                <v-chip
+                v-if="application.status == 'Опубликовано'"
+                color="purple"
+                outlined
+                >{{application.status}}</v-chip>
+                <v-chip
+                v-if="application.status == 'Одобрено'"
+                color="green"
+                outlined
+                >{{application.status}}</v-chip>
+                <v-chip
+                v-if="application.status == 'Завершено'"
+                color="red"
+                outlined
+                >{{application.status}}</v-chip>
+            </div>
           </div>
       </v-card-text>
       <slot name="edit-delete"></slot>
     </div>
-    <v-row>
+    <v-row class="pt-1">
       <v-col cols="12" align-self="center">
         <div class="subtitle">
           Ежемесячный платёж: <span class="black--text"> {{ application.payment }} ₽</span>
@@ -39,11 +53,11 @@
       </v-col>
     </v-row>
     <v-row class="mt-0">
-      <v-col cols="8" align-self="center" class="py-0">
+      <v-col cols="8" align-self="center" >
         <div class="subtitle">Остаток долга: {{application.debt}} ₽</div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="2">
+      <v-col cols="2" v-if="application.status == 'Одобрено'">
           <v-btn
           color="#3B7978"
           dark
@@ -61,7 +75,6 @@
     class="pa-4"
     elevation="0">
         <div class="mb-3">Редактировать заявку</div>
-        
         <v-row>
           <v-col cols="4">
             <div class="mr-2">

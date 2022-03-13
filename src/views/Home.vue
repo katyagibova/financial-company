@@ -7,6 +7,7 @@
           <div class="white--text">Больше, чем просто финансовая компания</div>
           <div>
             <v-btn
+            @click="$router.push({ name: 'user-profile' })"
             height="40px"
             dark
             depressed
