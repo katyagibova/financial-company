@@ -59,6 +59,7 @@
       <v-spacer></v-spacer>
       <v-col cols="2" v-if="application.status == 'Одобрено'">
           <v-btn
+          @click="payment_dialog = true"
           color="#3B7978"
           dark
           block
@@ -115,7 +116,7 @@
               <div>
                 Ежемесячный платёж:
               </div>
-              <div class="percent d-flex flex-coloumn align-center justify-center">{{payment}}₽</div>
+              <div class="percent d-flex flex-coloumn align-center justify-center">{{payment}} ₽</div>
             </div>
           </v-col>
         </v-row>
@@ -155,6 +156,36 @@
         </v-row>
     </v-card>
   </v-dialog>
+  <v-dialog v-model="payment_dialog" max-width="600">
+    <v-card>
+      <v-card-text class="d-flex justify-center text-h5 black--text pt-5">
+        Сумма списания составляет {{application.payment}} ₽
+      </v-card-text>
+      <v-card-text class="d-flex justify-center text-h5 black--text">
+        Заплатить?
+      </v-card-text>
+      <v-card-actions class="mt-3">
+      <v-spacer></v-spacer>
+        <v-btn
+        color="#F5F5F5"
+        @click="payment_dialog = false"
+        elevation="0"
+        >
+          Отмена
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn
+        elevation="0"
+        color="#3B7978"
+        dark
+        @click="makePayment"
+        >
+          Заплатить
+        </v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </div>
 </template>
 
@@ -171,6 +202,7 @@ export default {
   data() {
     return {
       edit_application_dialog: false,
+      payment_dialog: false,
       description: "",
       sum: null,
       monthsNumber: null,
@@ -222,19 +254,19 @@ export default {
         person: "Гибова Екатерина",
         personId: 4
       }
-      this.$store.dispatch("updateUserApplication", { appId: this.application.id, application: application, })
+      this.$store.dispatch("updateUserApplication", { appId: this.application.id, application: application })
       .then(() => {
         this.$store.dispatch("getUserApplication")
         this.edit_application_dialog = false
       })
-      this.$store.dispatch("updateApplication", { appId: this.application.id, application: application, })
+      this.$store.dispatch("updateApplication", { appId: this.application.id, application: application })
     },
 
     editApp(){
-        this.sum = this.application.sum
-        this.monthsNumber = this.application.monthsNumber
-        this.description = this.application.description
-        this.edit_application_dialog = true
+      this.sum = this.application.sum
+      this.monthsNumber = this.application.monthsNumber
+      this.description = this.application.description
+      this.edit_application_dialog = true
     },
 
     deleteApp(){
@@ -242,6 +274,18 @@ export default {
         this.$store.dispatch("getUserApplication")
       });
       this.$store.dispatch("deleteApplication", this.application.id)
+    },
+
+    makePayment(){
+      const percentageShare = this.application.debt * this.application.percent / 1200
+      const debtPart = this.application.payment - percentageShare
+      this.application.debt = this.rounded(this.application.debt - debtPart)
+      this.$store.dispatch("updateUserApplication", { appId: this.application.id, application: this.application })
+      .then(() => {
+        this.$store.dispatch("getUserApplication")
+        this.payment_dialog = false
+      })
+      this.$store.dispatch("updateApplication", { appId: this.application.id, application: this.application })
     },
 
     paymentCalculation(data){
