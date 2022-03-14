@@ -22,7 +22,7 @@
       </div>
     </v-container>
   </div>
-  <div class="grey lighten-4">
+  <div>
     <v-container>
       <v-row class="mt-4">
         <v-col 
@@ -53,7 +53,7 @@
           text
           block
           depressed
-          @click="$router.push({ name: 'applications' })">
+          @click="$router.push({ name: 'application-catalog' })">
             Перейти к заявкам
             <v-icon
             color="#3B7978">

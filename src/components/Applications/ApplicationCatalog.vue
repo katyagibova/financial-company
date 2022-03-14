@@ -1,5 +1,5 @@
 <template>
-<div  style="height: 100%; background-color: #edf3f0">
+<div>
   <v-container>
     <v-row dense>
       <v-col class="d-flex" cols="12" md="2">
@@ -82,11 +82,8 @@ export default {
     
   },
   created(){
-    this.$store.dispatch("getAppCities");
-    this.$store.dispatch("getApp");
-    this.$store.dispatch("getUserApplication").then(() => {
-      console.log(this.user_applications)
-    })
+    this.$store.dispatch("getAppCities")
+    this.$store.dispatch("getApp")
   }
 }
 </script>

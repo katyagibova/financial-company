@@ -1,5 +1,5 @@
 <template>
-<div  style="height: 100%; background-color: #edf3f0">
+<div>
   <v-container>
     <div class="d-flex mb-5">
         <div class="text-h4">Мои заявки</div>

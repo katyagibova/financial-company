@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
       <Header />
-      <v-main>
+      <v-main style=" background-color: #F5F5F5">
         <router-view />
       </v-main>
       <Footer />
