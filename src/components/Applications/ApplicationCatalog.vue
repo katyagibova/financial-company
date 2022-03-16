@@ -128,7 +128,7 @@
       cols="8"
       >
         <v-row>
-          <v-col>
+          <v-col cols="4">
             <v-select
             @change="fetchApplication"
             :items="sortBy"
@@ -150,12 +150,20 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col v-if="applications.length != 0" class="pt-0">
             <div
             v-for="item in applications"
             :key="item.id"
             @click="$router.push({ name: 'application-page', params: { appId: item.id } })">
               <ApplicationCard :application="item" />
+            </div>
+          </v-col>
+          <v-col v-else>
+            <div class="d-flex flex-column align-center">
+              <div class="notfound_message">По вашему запросу ничего не найдено</div>
+              <v-icon color="#E0E0E0" size="360">
+                mdi-emoticon-cry-outline
+              </v-icon>
             </div>
           </v-col>
         </v-row>
@@ -225,5 +233,10 @@ export default {
   line-height: 24px;
   color: #000;
   margin-bottom: 10px;
+}
+
+.notfound_message{
+  font-size: 28px;
+  line-height: 36px;
 }
 </style>
