@@ -10,6 +10,8 @@ export default new Vuex.Store({
     cities: [],
     user_applications: [],
     application: {},
+    maxRevenue: null,
+    maxSum: null,
     token: localStorage.getItem("token") || "",
   },
   getters: {
@@ -17,36 +19,42 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_APP(state, app) {
-      state.applications = app;
+      state.applications = app
+    },
+    SET_MAX_REVENUE(state, maxRevenue) {
+      state.maxRevenue = maxRevenue
+    },
+    SET_MAX_SUM(state, maxSum) {
+      state.maxSum = maxSum
     },
     SET_APP_INFO(state, app) {
-      state.application = app;
+      state.application = app
     },
     SET_APP_CITIES(state, cities) {
-      state.cities = cities;
+      state.cities = cities
     },
     SET_USER_APPLICATION(state, user_applications) {
-      state.user_applications = user_applications;
+      state.user_applications = user_applications
     },
     SET_TOKEN(state, token) {
-      state.token = token;
+      state.token = token
       localStorage.setItem("token", token)
     },
     DELETE_TOKEN(state) {
-      localStorage.removeItem("token");
-      state.token = "";
+      localStorage.removeItem("token")
+      state.token = ""
     },
     ADD_USER_APP(state, user_app) {
-      state.user_applications.push(user_app);
+      state.user_applications.push(user_app)
     },
     ADD_APP(state, app) {
-      state.applications.push(app);
+      state.applications.push(app)
     },
     DELETE_USER_APP(state, appId) {
-      state.user_applications = state.user_applications.filter((x) => x.id !== appId);
+      state.user_applications = state.user_applications.filter((x) => x.id !== appId)
     },
     DELETE_APP(state, appId) {
-      state.applications = state.applications.filter((x) => x.id !== appId);
+      state.applications = state.applications.filter((x) => x.id !== appId)
     },
   },
   actions: {
@@ -54,7 +62,25 @@ export default new Vuex.Store({
       return api
         .getApp(filters)
         .then((response) => {
-          commit("SET_APP", response.data);
+          commit("SET_APP", response.data)
+          
+          let maxRevenue = 0
+          let maxSum = 0
+          if(response.data.length != 0){
+            const sortRevenue = [...response.data]
+            sortRevenue.sort((a, b) => b.revenue - a.revenue)
+            maxRevenue = Number(sortRevenue[0].revenue)
+
+            const sortSum = [...response.data]
+            sortSum.sort((a, b) => b.sum - a.sum)
+            maxSum = Number(sortSum[0].sum)
+            
+          } else {
+            maxRevenue = 0
+            maxSum = 0
+          }
+          commit("SET_MAX_REVENUE", maxRevenue);
+          commit("SET_MAX_SUM", maxSum);
         })
         .catch((err) => console.log(err));
     },

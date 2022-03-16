@@ -11,7 +11,7 @@
     </div>
     <v-row>
       <v-col cols="12">
-        <div class="subtitle blue--text">
+        <div class="subtitle">
           Доход со сделки: <span class="black--text"> {{ application.revenue }} ₽</span>
         </div>
       </v-col>
@@ -56,5 +56,6 @@ export default {
 .subtitle{
   font-size: 20px;
   line-height: 28px;
+  color: #3B7978;
 }
 </style>

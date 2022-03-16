@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-container>
-    <v-row dense>
+    <!-- <v-row dense>
       <v-col class="d-flex" cols="12" md="2">
         <v-select
         :items="cities"
@@ -39,7 +39,7 @@
           Найти
         </v-btn>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row dense class="my-2">
       <v-col cols="4">
         <v-card elevation="0" class="rounded-xl pa-3">
@@ -176,7 +176,7 @@ export default {
     ApplicationCard
   },
   computed: {
-    ...mapState(["applications", "cities", "user_applications"]),
+    ...mapState(["applications", "cities", "user_applications", "maxRevenue", "maxSum"]),
   },
   data(){
     return {
@@ -206,15 +206,8 @@ export default {
         status: this.radioGroup
       }
       this.$store.dispatch("getApp", filters).then(() => {
-        if(this.toRevenue == 0){
-          this.applications.sort((a, b) => b.revenue - a.revenue)
-          this.toRevenue = Number(this.applications[0].revenue)
-        }
-        if(this.toSum == 0){
-          this.applications.sort((a, b) => a.sum < b.sum ? 1 : -1)
-          this.toSum = Number(this.applications[0].sum)
-        }
-        
+        this.toRevenue = this.maxRevenue
+        this.toSum = this.maxSum
       })
     },
   },
@@ -230,7 +223,7 @@ export default {
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
-  color: #000000;
+  color: #000;
   margin-bottom: 10px;
 }
 </style>
