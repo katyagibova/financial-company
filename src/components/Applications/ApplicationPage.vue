@@ -14,16 +14,16 @@
             <header class="header">
               {{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев
             </header>
-            <h1 class="description_title mt-4">
+            <h1 class="description_title mt-6">
               Описание
             </h1>
             <div class="description_subtitle mt-2">
               {{application.description}}
             </div>
-            <div class="description_title mt-4">
+            <div class="description_title mt-6">
               Доход со сделки: {{ application.revenue }} ₽
             </div>
-            <div class="mt-4">
+            <div class="mt-6">
               <v-btn
               v-if="!approved"
               @click="respondToApplication"
@@ -111,7 +111,7 @@ export default {
 
 .description_subtitle{
   font-size: 22px;
-  line-height: 40px;
+  line-height: 30px;
 }
 
 .approved_message{

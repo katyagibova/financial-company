@@ -3,47 +3,46 @@
   <v-card elevation="0" height="100%" class="pa-5 rounded-xl mb-3">
     <div class="d-flex flex-no-wrap">
       <v-card-text class="pa-0">
-          <div class="d-flex">
-              <div class="body-1 grey--text">
-                {{ dateFormat(application.publicationDate) }}
-              </div>
-              <v-spacer></v-spacer>
-              <div v-if="application.status == 'Опубликовано'">
-                  <v-btn  icon>
-                    <v-icon color="#000" size="20" @click="editApp">
-                        mdi-pencil-outline
-                    </v-icon>
-                  </v-btn>
-                  <v-btn icon class="ml-2">
-                    <v-icon color="#000" size="20" @click="deleteApp">
-                        mdi-trash-can-outline
-                    </v-icon>
-                  </v-btn>
-              </div>
+        <div class="d-flex">
+          <div class="body-1 grey--text">
+            {{ dateFormat(application.publicationDate) }}
           </div>
-          <div class="d-flex">
-            <div class="sum mb-2">{{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев</div>
-            <v-spacer></v-spacer>
-            <div>
-                <v-chip
-                v-if="application.status == 'Опубликовано'"
-                color="purple"
-                outlined
-                >{{application.status}}</v-chip>
-                <v-chip
-                v-if="application.status == 'Одобрено'"
-                color="green"
-                outlined
-                >{{application.status}}</v-chip>
-                <v-chip
-                v-if="application.status == 'Завершено'"
-                color="red"
-                outlined
-                >{{application.status}}</v-chip>
-            </div>
+          <v-spacer></v-spacer>
+          <div v-if="application.status == 'Опубликовано'">
+            <v-btn  icon>
+              <v-icon color="#000" size="20" @click="editApp">
+                mdi-pencil-outline
+              </v-icon>
+            </v-btn>
+            <v-btn icon class="ml-2">
+              <v-icon color="#000" size="20" @click="deleteApp">
+                mdi-trash-can-outline
+              </v-icon>
+            </v-btn>
           </div>
+        </div>
+        <div class="d-flex">
+          <div class="sum mb-2">{{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев</div>
+          <v-spacer></v-spacer>
+          <div>
+            <v-chip
+            v-if="application.status == 'Опубликовано'"
+            color="purple"
+            outlined
+            >{{application.status}}</v-chip>
+            <v-chip
+            v-if="application.status == 'Одобрено'"
+            color="green"
+            outlined
+            >{{application.status}}</v-chip>
+            <v-chip
+            v-if="application.status == 'Завершено'"
+            color="red"
+            outlined
+            >{{application.status}}</v-chip>
+          </div>
+        </div>
       </v-card-text>
-      <slot name="edit-delete"></slot>
     </div>
     <v-row class="pt-1">
       <v-col cols="12" align-self="center">
@@ -61,6 +60,7 @@
           <v-btn
           @click="payment_dialog = true"
           color="#3B7978"
+          class="rounded-lg"
           dark
           block
           depressed>
@@ -141,13 +141,14 @@
             dark
             block
             depressed
-            class="mr-2"
+            class="mr-2 rounded-lg"
             @click="updateApp">Сохранить</v-btn>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="2">
             <v-btn
             block
+            class="rounded-lg"
             color="#F5F5F5"
             depressed>
               Отмена
@@ -168,6 +169,7 @@
       <v-spacer></v-spacer>
         <v-btn
         color="#F5F5F5"
+        class="rounded-lg"
         @click="payment_dialog = false"
         elevation="0"
         >
@@ -177,6 +179,7 @@
         <v-btn
         elevation="0"
         color="#3B7978"
+        class="rounded-lg"
         dark
         @click="makePayment"
         >
@@ -277,9 +280,18 @@ export default {
     },
 
     makePayment(){
-      const percentageShare = this.application.debt * this.application.percent / 1200
-      const debtPart = this.application.payment - percentageShare
-      this.application.debt = this.rounded(this.application.debt - debtPart)
+      if(this.application.debt < this.application.payment){
+        this.application.debt = 0
+      } else {
+        const percentageShare = this.application.debt * this.application.percent / 1200
+        const debtPart = this.application.payment - percentageShare
+        this.application.debt = this.rounded(this.application.debt - debtPart)
+      }
+
+      if(this.application.debt == 0){
+        this.application.status = "Завершено"
+      }
+      
       this.$store.dispatch("updateUserApplication", { appId: this.application.id, application: this.application })
       .then(() => {
         this.$store.dispatch("getUserApplication")

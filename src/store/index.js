@@ -50,9 +50,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    getApp({ commit }) {
+    getApp({ commit }, filters) {
       return api
-        .getApp()
+        .getApp(filters)
         .then((response) => {
           commit("SET_APP", response.data);
         })

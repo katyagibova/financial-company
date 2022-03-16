@@ -3,8 +3,8 @@
     <v-toolbar flat>
       <div  sm="2" md="1" class="mr-4 fix-margin-left">
         <router-link to="/" class="reset-link">
-          <div >
-              <v-img width="40" class="my-logo" contain src="../../assets/main_logo.svg"></v-img>
+          <div>
+            <v-img width="40" class="my-logo" contain src="../../assets/main_logo.svg"></v-img>
           </div>
         </router-link>
       </div>

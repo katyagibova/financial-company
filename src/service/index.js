@@ -26,8 +26,17 @@ export const api = {
     login(data) {
         return apiAuth.post(`/auth/login`, data);
     },
-    getApp() {
-        return apiClient.get(`/applications`);
+    getApp({status, sortBy, fromRevenue, toRevenue, fromSum, toSum}) {
+
+        let url = `/applications?status=${status}&_sort=publicationDate&_order=${sortBy}`
+        if(toRevenue != 0){
+            url += `&revenue_gte=${fromRevenue}&revenue_lte=${toRevenue}`
+        }
+        if(toSum != 0){
+            url += `&sum_gte=${fromSum}&sum_lte=${toSum}`
+        }
+
+        return apiClient.get(url);
     },
     postNewApplication(data) {
         return apiClient.post(`/applications`, data);
