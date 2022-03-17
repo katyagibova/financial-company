@@ -12,7 +12,7 @@
         </div>
     </div>
     <v-row>
-      <v-col>
+      <v-col cols="12" sm="6">
         <div
         v-for="item in user_applications"
         :key="item.id">
@@ -108,6 +108,7 @@
           <v-spacer></v-spacer>
           <v-col cols="2">
             <v-btn
+            @click="create_application_dialog = false"
             block
             color="#F5F5F5"
             depressed>

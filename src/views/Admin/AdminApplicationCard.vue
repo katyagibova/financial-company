@@ -3,8 +3,8 @@
   <v-card elevation="0" height="100%" class="pa-5 rounded-xl mb-3">
     <div class="d-flex flex-no-wrap">
       <v-card-text class="pa-0">
-        <div class="d-flex">
-          <div class="body-1 grey--text">
+        <div class="d-flex align-center">
+          <div class="card_date grey--text">
             {{ dateFormat(application.publicationDate) }}
           </div>
           <v-spacer></v-spacer>
@@ -14,7 +14,7 @@
                 mdi-pencil-outline
               </v-icon>
             </v-btn>
-            <v-btn icon class="ml-2">
+            <v-btn icon>
               <v-icon color="#000" size="20" @click="deleteApp">
                 mdi-trash-can-outline
               </v-icon>
@@ -24,7 +24,46 @@
         <div class="d-flex">
           <div class="sum mb-2">{{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев</div>
           <v-spacer></v-spacer>
-          <div>
+          <div class="d-md-none d-flex"> 
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <div>
+                  <v-icon
+                  v-if="application.status == 'Опубликовано'"
+                  size="30"
+                  color="purple"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  >
+                    mdi-information-outline
+                  </v-icon>
+                  <v-icon
+                  v-if="application.status == 'Одобрено'"
+                  size="30"
+                  color="green"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  >
+                    mdi-information-outline
+                  </v-icon>
+                  <v-icon
+                  v-if="application.status == 'Завершено'"
+                  size="30"
+                  color="red"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  >
+                    mdi-information-outline
+                  </v-icon>
+                </div>
+                </template>
+                <span>{{application.status}}</span>
+            </v-tooltip>
+          </div>
+          <div class="d-none d-md-flex">
             <v-chip
             v-if="application.status == 'Опубликовано'"
             color="purple"
@@ -46,26 +85,40 @@
     </div>
     <v-row class="pt-1">
       <v-col cols="12" align-self="center">
-        <div class="subtitle">
-          Ежемесячный платёж: <span class="black--text"> {{ application.payment }} ₽</span>
+        <div class="card_subtitle">
+          Ежемесячный платёж: {{ application.payment }} ₽
         </div>
       </v-col>
     </v-row>
     <v-row class="mt-0">
-      <v-col cols="8" align-self="center" >
-        <div class="subtitle">Остаток долга: {{application.debt}} ₽</div>
+      <v-col cols="12" md="8" align-self="center" >
+        <div class="card_subtitle">Остаток долга: {{application.debt}} ₽</div>
       </v-col>
-      <v-spacer></v-spacer>
-      <v-col cols="2" v-if="application.status == 'Одобрено'">
+      <v-spacer class="d-none d-sm-flex"></v-spacer>
+      <!-- v-if="application.status == 'Одобрено'" -->
+      <v-col class="d-none d-sm-flex py-0">
           <v-btn
           @click="payment_dialog = true"
           color="#3B7978"
           class="rounded-lg"
-          dark
           block
+          dark
           depressed>
             Заплатить
           </v-btn>
+      </v-col>
+    </v-row>
+    <v-row class="d-sm-none d-flex" >
+      <v-col class="pt-0">
+        <v-btn
+        @click="payment_dialog = true"
+        color="#3B7978"
+        class="rounded-lg"
+        dark
+        block
+        depressed>
+          Заплатить
+        </v-btn>
       </v-col>
     </v-row>
   </v-card>
@@ -314,14 +367,19 @@ export default {
 </script>
 
 <style>
-.sum{
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 40px;
+.card_date{
+  font-size: 16px;
+  line-height: 16px;
 }
 
-.subtitle{
-  font-size: 22px;
-  line-height: 28px;
+.sum{
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 32px;
+}
+
+.card_subtitle{
+  font-size: 18px;
+  line-height: 20px;
 }
 </style>
