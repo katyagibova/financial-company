@@ -4,18 +4,18 @@
       <div  sm="2" md="1" class="mr-4 fix-margin-left">
         <router-link to="/" class="reset-link">
           <div>
-            <v-img width="40" class="my-logo" contain src="../../assets/main_logo.svg"></v-img>
+            <v-img width="40" class="my-logo" contain src="../../assets/logo.svg"></v-img>
           </div>
         </router-link>
       </div>
-      <v-toolbar-title>
+      <v-toolbar-title class="d-none d-md-flex">
         <div class="logo-text">Aced deal!</div>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <div class="d-none d-md-flex">
+      <div class="d-none d-sm-flex">
         <div
-        class="text d-flex align-end"
+        class="text d-flex align-center"
         @click="$router.push({ name: 'application-catalog' })">Все заявки</div>
 
         <v-btn
@@ -40,6 +40,42 @@
         >
           Выйти
         </v-btn>        
+      </div>
+      <div class="d-sm-none d-flex">
+        <div
+        class="text d-flex align-center"
+        @click="$router.push({ name: 'application-catalog' })">Все заявки</div>
+
+        <v-btn
+        class="ml-2 rounded-lg fix-margin-right"
+        height="40"
+        small
+        depressed
+        icon
+        dark
+        color="#3B7978"
+        @click="$router.push({ name: 'user-profile' })"
+        >
+          <v-icon size="26">
+            mdi-account-circle
+          </v-icon>
+        </v-btn>
+
+        <v-btn
+        v-if="loggedIn"
+        class="ml-5 rounded-lg fix-margin-right"
+        dark
+        small
+        height="40"
+        icon
+        depressed
+        color="#3B7978"
+        @click="logout"
+        >
+          <v-icon size="26">
+            mdi-exit-to-app
+          </v-icon>
+        </v-btn>  
       </div>
     </v-toolbar>
   </v-container>
@@ -69,7 +105,7 @@ export default {
 
 <style lang="scss">
 .text{
-  font-size: 22px;
+  font-size: 20px;
   &:hover{
     text-decoration: underline;
     color: #3B7978;
