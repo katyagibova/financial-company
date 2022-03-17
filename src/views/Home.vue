@@ -2,22 +2,14 @@
 <div>
   <div class="home">
     <v-container>
-      <div class="my-3 d-flex justify-space-between">
-        <div class="text-h2 d-flex justify-center flex-column">
+      <div class="my-3 d-flex flex-column justify-center align-center flex-md-row justify-md-space-between">
+        <div class="d-flex justify-center text-center text-h5 text-sm-h3 text-md-h2 text-md-left flex-column">
           <div class="white--text">Больше, чем просто финансовая компания</div>
-          <div>
-            <v-btn
-            @click="$router.push({ name: 'user-profile' })"
-            height="40px"
-            dark
-            depressed
-            outlined
-            class="rounded-lg"
-            color="#fff">Оставить заявку</v-btn>
-          </div>
         </div>
         <div>
-          <v-img width="660" contain src="../assets/main_img.svg"></v-img>
+          <v-img width="19rem" class="d-sm-none d-flex" contain src="../assets/main_img.svg"></v-img>
+          <v-img width="30rem" class="d-none d-sm-flex d-md-none" contain src="../assets/main_img.svg"></v-img>
+          <v-img width="40rem" class="d-none d-md-flex" contain src="../assets/main_img.svg"></v-img>
         </div>
       </div>
     </v-container>
@@ -26,28 +18,30 @@
     <v-container>
       <v-row class="mt-4">
         <v-col 
-        cols="4" 
+        cols="12" 
+        md="4"
         v-for="(item, i) in advantages" 
         :key="i"
         class="d-flex flex-column align-center">
           <v-icon size="40" color="#3B7978">
             mdi-{{item.icon}}
           </v-icon>
-          <div class="advantages-title mt-4">{{item.title}}</div>
-          <div class="mt-2" style="text-align: center; color: #616161">
+          <div class="advantages-title text-center mt-4">{{item.title}}</div>
+          <div class="mt-2 mx-sm-16 mx-md-0 text-center" style=" color: #616161">
             {{item.text}}
           </div>
         </v-col>
       </v-row>
-      <v-row class="mt-4 mb-7">
-        <v-col cols="2">
+      <v-row class="mt-4 mb-md-7">
+        <v-col cols="12" md="3" lg="2" sm="12">
           <v-btn
+          @click="$router.push({ name: 'user-profile' })"
           color="#3B7978"
           dark
           block
-          depressed>Рассчитать займ</v-btn>
+          depressed>Оставить заявку</v-btn>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="12" md="3" lg="2" sm="12">
           <v-btn
           color="#3B7978"
           text

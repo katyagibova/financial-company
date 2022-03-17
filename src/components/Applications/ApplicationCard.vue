@@ -7,7 +7,6 @@
         </div>
         <div class="sum mb-2">{{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев</div>
       </v-card-text>
-      <slot name="edit-delete"></slot>
     </div>
     <v-row>
       <v-col cols="12">
