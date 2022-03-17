@@ -17,7 +17,7 @@
             <h1 class="description_title mt-6">
               Описание
             </h1>
-            <div class="description_subtitle mt-2">
+            <div style="white-space: pre-line" class="description_subtitle mt-2 text-justify">
               {{application.description}}
             </div>
             <div class="description_title mt-6">
