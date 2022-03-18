@@ -9,7 +9,7 @@
 
 ## Скриншоты проекта
 ![Иллюстрация к проекту](https://github.com/katyagibova/financial-company/blob/master/screenshots/screen1.PNG "Главная страница")
-![Иллюстрация к проекту](screenshots/screen2.png "Каталог заявок")
+![Иллюстрация к проекту](./screenshots/screen2.png "Каталог заявок")
 ![Иллюстрация к проекту](screenshots/screen3.png "Страница заявки")
 ![Иллюстрация к проекту](screenshots/screen4.png "Страница авторизации")
 ![Иллюстрация к проекту](screenshots/screen5.png "Личный кабинет")
