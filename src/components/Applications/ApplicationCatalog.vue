@@ -311,12 +311,10 @@ export default {
     ApplicationCard
   },
   computed: {
-    ...mapState(["applications", "cities", "user_applications", "maxRevenue", "maxSum"]),
+    ...mapState(["applications", "maxRevenue", "maxSum"]),
   },
   data(){
     return {
-      city: "Москва",
-      rearch: "",
       sortBy: [
         { state: "Сначала новые", value: "desc" },
         { state: "Сначала старые", value: "asc" }
@@ -350,7 +348,6 @@ export default {
     },
   },
   created(){
-    this.$store.dispatch("getAppCities")
     this.fetchApplication()
   }
 }
