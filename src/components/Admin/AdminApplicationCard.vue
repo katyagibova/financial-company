@@ -1,21 +1,21 @@
 <template>
 <div>
-  <v-card elevation="0" height="100%" class="pa-5 rounded-xl mb-3">
+  <v-card flat class="pa-5 rounded-xl">
     <div class="d-flex flex-no-wrap">
       <v-card-text class="pa-0">
-        <div class="d-flex align-center">
+        <div class="d-flex align-center" style="height: 36px">
           <div class="card_date grey--text">
             {{ dateFormat(application.publicationDate) }}
           </div>
           <v-spacer></v-spacer>
           <div v-if="application.status == 'Опубликовано'">
-            <v-btn  icon>
+            <v-btn icon>
               <v-icon color="#000" size="20" @click="editApp">
                 mdi-pencil-outline
               </v-icon>
             </v-btn>
             <v-btn icon>
-              <v-icon color="#000" size="20" @click="deleteApp">
+              <v-icon color="#000" size="20" @click="delete_application_dialog = true">
                 mdi-trash-can-outline
               </v-icon>
             </v-btn>
@@ -25,7 +25,7 @@
           <div class="sum mb-2">{{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев</div>
           <v-spacer></v-spacer>
           <div class="d-md-none d-flex"> 
-            <v-tooltip bottom>
+            <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <div>
                   <v-icon
@@ -59,8 +59,8 @@
                     mdi-information-outline
                   </v-icon>
                 </div>
-                </template>
-                <span>{{application.status}}</span>
+              </template>
+              <span>{{application.status}}</span>
             </v-tooltip>
           </div>
           <div class="d-none d-md-flex">
@@ -95,21 +95,20 @@
         <div class="card_subtitle">Остаток долга: {{application.debt}} ₽</div>
       </v-col>
       <v-spacer class="d-none d-sm-flex"></v-spacer>
-      <!-- v-if="application.status == 'Одобрено'" -->
-      <v-col class="d-none d-sm-flex py-0">
-          <v-btn
-          @click="payment_dialog = true"
-          color="#3B7978"
-          class="rounded-lg"
-          block
-          dark
-          depressed>
-            Заплатить
-          </v-btn>
+      <v-col class="d-none d-sm-flex py-0" v-if="application.status == 'Одобрено'">
+        <v-btn
+        @click="payment_dialog = true"
+        color="#3B7978"
+        class="rounded-lg"
+        block
+        dark
+        depressed>
+          Заплатить
+        </v-btn>
       </v-col>
     </v-row>
-    <v-row class="d-sm-none d-flex" >
-      <v-col class="pt-0">
+    <v-row class="d-sm-none d-flex" v-if="application.status == 'Одобрено'">
+      <v-col class="pt-0 d-flex align-end">
         <v-btn
         @click="payment_dialog = true"
         color="#3B7978"
@@ -126,100 +125,116 @@
   v-model="edit_application_dialog"
   max-width="800">
     <v-card
+    ref="form"
     class="pa-4"
     elevation="0">
-        <div class="mb-3">Редактировать заявку</div>
-        <v-row>
-          <v-col cols="4">
-            <div class="mr-2">
-                Сумма займа
-                <v-text-field
-                v-model="sum"
-                hide-details="auto"
-                flat
-                solo
-                background-color="#F5F5F5">
-                </v-text-field>
-            </div>
-          </v-col>
-          <v-col cols="8">
-            <div>
-              <div>
-                Итоговая процентная ставка:
-              </div>
-              <div class="percent d-flex flex-coloumn align-center justify-center">{{percent}}%</div>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <div class="mr-2">
-              Срок выплаты (в месяцах)
-                <v-text-field
-                v-model="monthsNumber"
-                hide-details="auto"
-                flat
-                solo
-                background-color="#F5F5F5">
-                </v-text-field>
-            </div>
-          </v-col>
-          <v-col cols="8">
-            <div>
-              <div>
-                Ежемесячный платёж:
-              </div>
-              <div class="percent d-flex flex-coloumn align-center justify-center">{{payment}} ₽</div>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <div class="mb-2">
-              Описание заявки
-              <v-textarea
-              solo
-              v-model="description"
-              hide-details="auto"
-              background-color="#F5F5F5"
-              flat
-              ></v-textarea>
+      <div class="d-flex align-center mb-3">
+        <div class="text-h5">Редактировать заявку</div>
+        <v-spacer></v-spacer>
+        <v-btn
+        @click="edit_application_dialog = false"
+        depressed
+        icon>
+          <v-icon size="28">
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </div>
+      <v-row>
+        <v-col cols="12" sm="5" md="4">
+          <div class="mr-2">
+            Сумма займа
+            <v-text-field
+            v-model="sum"
+            ref="sum"
+            :rules="[rules.required, rules.isFloatNumber]"
+            hide-details="auto"
+            flat
+            solo
+            background-color="#F5F5F5">
+            </v-text-field>
           </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="2">
-            <v-btn
-            color="#3B7978"
-            dark
-            block
-            depressed
-            class="mr-2 rounded-lg"
-            @click="updateApp">Сохранить</v-btn>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="2">
-            <v-btn
-            block
-            class="rounded-lg"
-            color="#F5F5F5"
-            depressed>
-              Отмена
-            </v-btn>
-          </v-col>
-        </v-row>
+        </v-col>
+        <v-col cols="12" sm="7" md="8">
+          <div>
+            <div>
+              Итоговая процентная ставка:
+            </div>
+            <div class="percent d-flex flex-coloumn align-center justify-center">{{percent}}%</div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="5" md="4">
+          <div class="mr-2">
+            Срок выплаты (в месяцах)
+            <v-text-field
+            ref="monthsNumber"
+            v-model="monthsNumber"
+            :rules="[rules.required, rules.isIntNumber]"
+            hide-details="auto"
+            flat
+            solo
+            background-color="#F5F5F5">
+            </v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="12" sm="7" md="8">
+          <div>
+            <div>
+              Ежемесячный платёж:
+            </div>
+            <div class="percent d-flex flex-coloumn align-center justify-center">{{payment}} ₽</div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <div class="mb-2">
+            Описание заявки
+            <v-textarea
+            solo
+            v-model="description"
+            hide-details="auto"
+            background-color="#F5F5F5"
+            flat
+            ></v-textarea>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6" sm="3">
+          <v-btn
+          color="#3B7978"
+          dark
+          block
+          depressed
+          class="mr-2 rounded-lg"
+          @click="updateApp">Сохранить</v-btn>
+        </v-col>
+        <v-col cols="6" sm="3">
+          <v-btn
+          @click="edit_application_dialog = false"
+          block
+          class="rounded-lg"
+          color="#F5F5F5"
+          depressed>
+            Отмена
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card>
   </v-dialog>
   <v-dialog v-model="payment_dialog" max-width="600">
     <v-card>
-      <v-card-text class="d-flex justify-center text-h5 black--text pt-5">
+      <v-card-text class="d-flex justify-center text-h5 black--text text-center pt-5">
         Сумма списания составляет {{application.payment}} ₽
       </v-card-text>
-      <v-card-text class="d-flex justify-center text-h5 black--text">
+      <v-card-text class="d-flex justify-center text-h5 text-center black--text">
         Заплатить?
       </v-card-text>
       <v-card-actions class="mt-3">
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
         <v-btn
         color="#F5F5F5"
         class="rounded-lg"
@@ -242,6 +257,35 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-dialog v-model="delete_application_dialog" max-width="600">
+    <v-card>
+      <v-card-text class="d-flex justify-center text-h5 black--text text-center pt-5">
+        Вы действительно хотите удалить эту заявку?
+      </v-card-text>
+      <v-card-actions class="mt-3">
+        <v-spacer></v-spacer>
+        <v-btn
+        color="#F5F5F5"
+        class="rounded-lg"
+        @click="delete_application_dialog = false"
+        elevation="0"
+        >
+          Отмена
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn
+        elevation="0"
+        color="#3B7978"
+        class="rounded-lg"
+        dark
+        @click="deleteApp"
+        >
+          Удалить
+        </v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </div>
 </template>
 
@@ -255,22 +299,43 @@ export default {
       required: true,
     },
   },
+  computed:{
+    form () {
+      return {
+        sum: this.sum,
+        monthsNumber: this.monthsNumber,
+      }
+    },
+  },
   data() {
     return {
       edit_application_dialog: false,
+      delete_application_dialog: false,
       payment_dialog: false,
       description: "",
       sum: null,
       monthsNumber: null,
       percent: 0,
       payment: 0,
+      rules: {
+        required: value => {
+          return !!value || 'Обязательно для заполнения'
+        },
+        isFloatNumber: value => {
+          const pattern = /^[1-9][0-9]*(\.[0-9]+)?$/
+          return pattern.test(value) || 'Не верный формат числа.\n Пример: 5500.5'
+        },
+        isIntNumber: value => {
+          const pattern = /^[1-9][0-9]*$/
+          return pattern.test(value) || 'Введите целое положительное число'
+        },
+      },
+      formHasErrors: false,
     };
   },
   watch: {
     sum(value){
-      if(value == 0){
-        this.percent = 0
-      } else if(value > 0 && value < 10000){
+      if(value > 0 && value < 10000){
         this.percent = 11
       } else if(value >= 10000 && value < 15000){
         this.percent = 12
@@ -280,13 +345,23 @@ export default {
         this.percent = 14
       } else if(value >= 25000){
         this.percent = 15
-      } 
-      this.paymentCalculation(this.monthsNumber)
+      }  else {
+        this.percent = 0
+        this.payment = 0
+        return
+      }
+
+      if(this.monthsNumber > 0){
+        this.paymentCalculation(this.monthsNumber)
+      }
     },
     monthsNumber(value){
-      if(this.sum <= 0) return
-
-      this.paymentCalculation(value)
+      if(this.sum > 0 && value > 0){
+        this.paymentCalculation(value)
+      } else {
+        this.payment = 0
+        return
+      }
     }
   },
   methods: {
@@ -296,6 +371,9 @@ export default {
     },
 
     updateApp(){
+      this.submit()
+      if(this.formHasErrors) return
+
       const revenue = (this.payment * this.monthsNumber - this.sum) * 0.9
       const application = {
         sum: Number(this.sum),
@@ -361,7 +439,17 @@ export default {
 
     rounded(number){
       return +number.toFixed(2);
-    }
+    },
+
+    submit() {
+      this.formHasErrors = false
+
+      Object.keys(this.form).forEach(f => {
+        if (!this.form[f]) this.formHasErrors = true
+
+        this.$refs[f].validate(true)
+      })
+    },
   },
 };
 </script>
@@ -369,7 +457,7 @@ export default {
 <style>
 .card_date{
   font-size: 16px;
-  line-height: 16px;
+  line-height: 20px;
 }
 
 .sum{

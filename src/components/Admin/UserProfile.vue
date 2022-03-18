@@ -12,12 +12,11 @@
         </div>
     </div>
     <v-row>
-      <v-col cols="12" sm="6">
-        <div
-        v-for="item in user_applications"
-        :key="item.id">
-          <AdminApplicationCard :application="item" />
-        </div>
+      <v-col cols="12" sm="6"
+      style="height: 100%"
+      v-for="item in user_applications"
+      :key="item.id">
+        <AdminApplicationCard :application="item" />
       </v-col>
     </v-row>
   </v-container>
@@ -25,46 +24,62 @@
   v-model="create_application_dialog"
   max-width="800">
     <v-card
+    ref="form"
     class="pa-4"
     elevation="0">
-        <div class="mb-3">Создать заявку</div>
-        
-        <v-row>
-          <v-col cols="4">
-            <div class="mr-2">
-                Сумма займа
-                <v-text-field
-                v-model="sum"
-                hide-details="auto"
-                flat
-                solo
-                background-color="#F5F5F5">
-                </v-text-field>
-            </div>
-          </v-col>
-          <v-col cols="8">
+      <div class="d-flex align-center mb-3">
+        <div class="text-h5">Создать заявку</div>
+        <v-spacer></v-spacer>
+        <v-btn
+        @click="create_application_dialog = false"
+        depressed
+        icon>
+          <v-icon size="28">
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </div>
+      <v-row>
+        <v-col cols="12" sm="5" md="4">
+          <div class="mr-2">
+            Сумма займа
+            <v-text-field
+            ref="sum"
+            v-model="sum"
+            :rules="[rules.required, rules.isFloatNumber]"
+            hide-details="auto"
+            flat
+            solo
+            background-color="#F5F5F5"
+            >
+            </v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="12" sm="7" md="8">
+          <div>
             <div>
-              <div>
-                Итоговая процентная ставка:
-              </div>
-              <div class="percent d-flex flex-coloumn align-center justify-center">{{percent}}%</div>
+              Итоговая процентная ставка:
             </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <div class="mr-2">
-              Срок выплаты (в месяцах)
-                <v-text-field
-                v-model="monthsNumber"
-                hide-details="auto"
-                flat
-                solo
-                background-color="#F5F5F5">
-                </v-text-field>
-            </div>
-          </v-col>
-          <v-col cols="8">
+            <div class="percent d-flex flex-coloumn align-center justify-center">{{percent}}%</div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="5" md="4">
+          <div class="mr-2">
+            Срок выплаты (в месяцах)
+            <v-text-field
+            ref="monthsNumber"
+            v-model="monthsNumber"
+            hide-details="auto"
+            :rules="[rules.required, rules.isIntNumber]"
+            flat
+            solo
+            background-color="#F5F5F5">
+            </v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="12" sm="7" md="8">
             <div>
               <div>
                 Ежемесячный платёж:
@@ -87,29 +102,21 @@
           </div>
           </v-col>
         </v-row>
-        <!-- <div>
-            <v-slider
-            color="#3B7978"
-            track-color="#3B7978"
-            v-model="slider"
-            thumb-label="always"
-            ></v-slider>
-        </div> -->
         <v-row>
-          <v-col cols="2">
+          <v-col cols="6" sm="3">
             <v-btn
             color="#3B7978"
             dark
             block
             depressed
-            class="mr-2"
+            class="mr-2 rounded-lg"
             @click="postNewApplication">Сохранить</v-btn>
           </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="2">
+          <v-col cols="6" sm="3">
             <v-btn
             @click="create_application_dialog = false"
             block
+            class="rounded-lg"
             color="#F5F5F5"
             depressed>
               Отмена
@@ -135,7 +142,13 @@ export default {
     generateId(){
       const id = '_' + Math.random().toString(36).substr(2, 9);
       return id
-    }
+    },
+    form () {
+      return {
+        sum: this.sum,
+        monthsNumber: this.monthsNumber,
+      }
+    },
   },
   data(){
     return {
@@ -145,13 +158,25 @@ export default {
       percent: 0,
       payment: 0,
       create_application_dialog: false,
+      rules: {
+        required: value => {
+          return !!value || 'Обязательно для заполнения'
+        },
+        isFloatNumber: value => {
+          const pattern = /^[1-9][0-9]*(\.[0-9]+)?$/
+          return pattern.test(value) || 'Пример: 5500.5'
+        },
+        isIntNumber: value => {
+          const pattern = /^[1-9][0-9]*$/
+          return pattern.test(value) || 'Пример: 14'
+        },
+      },
+      formHasErrors: false,
     }
   },
   watch: {
     sum(value){
-      if(value == 0){
-        this.percent = 0
-      } else if(value > 0 && value < 10000){
+      if(value > 0 && value < 10000){
         this.percent = 11
       } else if(value >= 10000 && value < 15000){
         this.percent = 12
@@ -161,18 +186,30 @@ export default {
         this.percent = 14
       } else if(value >= 25000){
         this.percent = 15
+      }  else {
+        this.percent = 0
+        this.payment = 0
+        return
       }
 
-      this.paymentCalculation(this.monthsNumber)
+      if(this.monthsNumber > 0){
+        this.paymentCalculation(this.monthsNumber)
+      }
     },
     monthsNumber(value){
-      if(this.sum <= 0) return
-
-      this.paymentCalculation(value)
+      if(this.sum > 0 && value > 0){
+        this.paymentCalculation(value)
+      } else {
+        this.payment = 0
+        return
+      }
     }
   },
   methods: {
     postNewApplication(){
+      this.submit()
+      if(this.formHasErrors) return
+      
       const revenue = (this.payment * this.monthsNumber - this.sum) * 0.9
       const application = {
         id: this.generateId,
@@ -188,7 +225,6 @@ export default {
         person: "Гибова Екатерина",
         personId: 4
       }
-      console.log(application)
       this.$store.dispatch("postNewApplication", application)
       this.$store.dispatch("postNewUserApplication", application).then(() => {
         this.create_application_dialog = false
@@ -212,6 +248,16 @@ export default {
       this.monthsNumber = null
       this.percent = 0
       this.payment= 0
+    },
+
+    submit() {
+      this.formHasErrors = false
+
+      Object.keys(this.form).forEach(f => {
+        if (!this.form[f]) this.formHasErrors = true
+
+        this.$refs[f].validate(true)
+      })
     },
   },
   created(){

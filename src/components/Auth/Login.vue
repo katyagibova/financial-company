@@ -57,11 +57,7 @@
                   Продолжить
                 </v-btn>
                 <p class="mb-0">
-                  Нет аккаунта?
-                  <!-- <router-link
-                  style="text-decoration: unset">
-                    Зарегистрироваться
-                  </router-link> -->
+                  Нет аккаунта? Зарегистрироваться
                 </p>
               </div>
             </div>
@@ -95,14 +91,6 @@ export default {
       })
       .catch(() => {});
     },
-    // sendCode() {
-    //   this.$store
-    //     .dispatch("auth/sendConfirmationCode", this.mail)
-    //     .then(() => {
-    //       this.enterMail = false;
-    //     })
-    //     .catch(() => {});
-    // },
   },
 };
 </script>

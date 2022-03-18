@@ -287,8 +287,8 @@
           </v-col>
           <v-col v-else>
             <div class="d-flex flex-column align-center">
-              <div class="notfound_message">По вашему запросу ничего не найдено</div>
-              <v-icon color="#E0E0E0" size="360">
+              <div class="notfound_message text-center">По вашему запросу ничего не найдено</div>
+              <v-icon color="#E0E0E0" size="285">
                 mdi-emoticon-cry-outline
               </v-icon>
             </div>

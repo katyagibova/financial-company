@@ -3,43 +3,45 @@
     <v-container>
       <v-row>
         <v-col>
-          <header class="date grey--text">
+          <div class="text-sm-h6 subtitle-1 font-weight-regular grey--text">
             {{dateFormat(this.application.publicationDate)}}
-          </header>
+          </div>
         </v-col>
       </v-row>
       <v-row class="mt-0">
         <v-col>
-          <section>
-            <header class="header">
-              {{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев
-            </header>
-            <h1 class="description_title mt-6">
-              Описание
-            </h1>
-            <div style="white-space: pre-line" class="description_subtitle mt-2 text-justify">
-              {{application.description}}
+          <div class="text-h5 text-sm-h4">
+            {{ application.sum }} ₽ на {{ application.monthsNumber }} месяцев
+          </div>
+          <div class="text-h6 text-sm-h5 font-weight-medium mt-3 mt-md-6">
+            Описание
+          </div>
+          <div style="white-space: pre-line" class="subtitle-1 text-sm-h6 font-weight-regular mt-1 mt-md-2 text-justify">
+            {{application.description}}
+          </div>
+          <div class="text-h6 text-sm-h5 font-weight-medium mt-3 mt-md-6">
+            Статус: <span class="text-h6 text-sm-h5 font-weight-regular">{{ application.status }}</span> 
+          </div>
+          <div class="text-h6 text-sm-h5 font-weight-medium mt-3 mt-md-6">
+            Доход со сделки: <span class="text-h6 text-sm-h5 font-weight-regular">{{ application.revenue }} ₽</span> 
+          </div>
+          <div class="mt-3 mt-md-6">
+            <v-btn
+            v-if="!approved && application.status == 'Опубликовано'"
+            @click="respondToApplication"
+            dark
+            color="#3B7978"
+            depressed>
+              Откликнуться
+            </v-btn>
+            <div
+            v-if="approved"
+            style="color: #3B7978;"
+            class="subtitle-1 text-sm-h6">
+              <p class="mb-0">Спасибо, что откликнулись на эту заявку! </p>
+              <p>Когда {{application.person}} выплатит займ, на ваш счет поступят средства.</p>
             </div>
-            <div class="description_title mt-6">
-              Доход со сделки: {{ application.revenue }} ₽
-            </div>
-            <div class="mt-6">
-              <v-btn
-              v-if="!approved"
-              @click="respondToApplication"
-              dark
-              color="#3B7978"
-              depressed>
-                Откликнуться
-              </v-btn>
-              <div
-              class="approved_message"
-              v-if="approved">
-                <p class="mb-0">Спасибо, что откликнулись на эту заявку! </p>
-                <p>Когда {{application.person}} выплатит займ, на ваш счет поступят средства.</p>
-              </div>
-            </div>
-          </section>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -94,29 +96,4 @@ export default {
 </script>
 
 <style>
-.date{
-  font-size: 20px;
-}
-.header{
-  font-weight: 500;
-  font-size: 36px;
-  line-height: 40px;
-}
-
-.description_title{
-  font-size: 32px;
-  line-height: 40px;
-  font-weight: 400;
-}
-
-.description_subtitle{
-  font-size: 22px;
-  line-height: 30px;
-}
-
-.approved_message{
-  font-size: 20px;
-  line-height: 30px;
-  color: #3B7978;
-}
 </style>

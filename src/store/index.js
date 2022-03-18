@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { api } from "@/service";
+import { api } from "@/service"
 
 Vue.use(Vuex)
 
@@ -79,128 +79,113 @@ export default new Vuex.Store({
             maxRevenue = 0
             maxSum = 0
           }
-          commit("SET_MAX_REVENUE", maxRevenue);
-          commit("SET_MAX_SUM", maxSum);
+          commit("SET_MAX_REVENUE", maxRevenue)
+          commit("SET_MAX_SUM", maxSum)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
     getAppCities({ commit }) {
       return api
         .getAppCities()
         .then((response) => {
-          commit("SET_APP_CITIES", response.data);
+          commit("SET_APP_CITIES", response.data)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
     loginUser({ commit }, data) {
       return api
         .login(data)
         .then((response) => {
-          const { access_token } = response.data;
-          commit("SET_TOKEN", access_token);
-          // commit("SET_USERID", userId);
-          // const notification = {
-          //   type: "success",
-          //   message: "Вы успешно вошли в систему",
-          // };
-          // dispatch("notification/add", notification, { root: true });
-          // return userId;
+          const { access_token } = response.data
+          commit("SET_TOKEN", access_token)
         })
         .catch((error) => {
           console.log(error)
-          // const notification = {
-          //   type: "error",
-          //   message:
-          //     "При входе в учетную запись возникла проблема: " + error.response
-          //       ? error.response.data.message
-          //       : error,
-          // };
-          // dispatch("notification/add", notification, { root: true });
-          throw error;
-        });
+          throw error
+        })
     },
     logoutUser({ commit }) {
-      commit("DELETE_TOKEN");
+      commit("DELETE_TOKEN")
     },
     getUserApplication({ commit }) {
       return api
         .getUserApplication()
         .then((response) => {
-          commit("SET_USER_APPLICATION", response.data);
+          commit("SET_USER_APPLICATION", response.data)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
     postNewApplication({ commit }, data) {
       return api
         .postNewApplication(data)
         .then((response) => {
-          const res = response.data;
-          commit("ADD_APP", res);
-          return res;
+          const res = response.data
+          commit("ADD_APP", res)
+          return res
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     updateApplication(_commit, data) {
       return api
         .updateApplication(data)
         .then((response) => {
-          const res = response.data;
-          return res;
+          const res = response.data
+          return res
         })
         .catch((err) => {
-          console.log(err);
-          throw err;
-        });
+          console.log(err)
+          throw err
+        })
     },
     deleteApplication({ commit }, appId ) {
       return api
         .deleteApplication(appId)
         .then(() => {
-          commit("DELETE_APP", appId);
+          commit("DELETE_APP", appId)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
     postNewUserApplication({ commit }, data) {
       return api
         .postNewUserApplication(data)
         .then((response) => {
-          const res = response.data;
-          commit("ADD_USER_APP", res);
-          return res;
+          const res = response.data
+          commit("ADD_USER_APP", res)
+          return res
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     updateUserApplication(_commit, data) {
       return api
         .updateUserApplication(data)
         .then((response) => {
-          const res = response.data;
-          return res;
+          const res = response.data
+          return res
         })
         .catch((err) => {
-          console.log(err);
-          throw err;
-        });
+          console.log(err)
+          throw err
+        })
     },
     deleteUserApplication({ commit }, appId ) {
       return api
         .deleteUserApplication(appId)
         .then(() => {
-          commit("DELETE_USER_APP", appId);
+          commit("DELETE_USER_APP", appId)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
     getAppInfo({ commit }, appId) {
       return api
         .getAppInfo(appId)
         .then((response) => {
-          commit("SET_APP_INFO", response.data);
+          commit("SET_APP_INFO", response.data)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
   },
 })
